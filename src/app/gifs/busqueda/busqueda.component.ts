@@ -1,4 +1,5 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { GifsService } from '../services/gifs.service';
 
 @Component({
   selector: 'app-busqueda',
@@ -14,14 +15,17 @@ export class BusquedaComponent implements OnInit {
    */  
    @ViewChild('txtBuscar') txtBuscar!: ElementRef<HTMLInputElement> // * ! non null assertion operator (typescript no javascript)
 
-  constructor() { }
+  constructor(private _gifsServ: GifsService) { }
 
   ngOnInit(): void {
   } 
 
   buscar() {
     const valor = this.txtBuscar.nativeElement.value
-    console.log(valor);
+
+    if(valor.trim().length === 0) { return }
+    
+    this._gifsServ.buscarGifs(valor)
 
     // *limpiar el input tras la busqueda, esta bindeado al DOM
     this.txtBuscar.nativeElement.value = ''
